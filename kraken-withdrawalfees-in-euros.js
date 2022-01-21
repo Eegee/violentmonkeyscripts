@@ -3,28 +3,29 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.0.1
+// @version      1.1
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
 // @license      BSD 3-Clause License
-// @copyright    2021 Erik Jan Meijer
+// @copyright    2022 Erik Jan Meijer
 // ==/UserScript==
 
 const currency = "EUR";
 
 var firstTable = document.getElementsByTagName("table")[0]
-if (firstTable) {
+var secondTable = document.getElementsByTagName("table")[1]
+if (firstTable && secondTable) {
   var columns = firstTable.rows[0].getElementsByTagName('th').length;
   var extraheader = document.createElement('th');
   var firstHeader = firstTable.rows[0].cells[0];
   extraheader.innerHTML = firstHeader.outerHTML.replace(firstHeader.innerText, "Withdrawal fee in " + currency);
   firstTable.rows[0].appendChild(extraheader);
-  var re = /(\d+(?:.\d+)?) ([\S]+)/gi;
+  var re = /([\d,]+(?:\.\d+)?) ([\S]+)/gi;
 
   var coinIds = [];
-  for (var r = 1; r < firstTable.rows.length; r++) {
-    var row = firstTable.rows[r];
+  for (var r = 0; r < secondTable.rows.length; r++) {
+    var row = secondTable.rows[r];
     var coinName = (row.cells[0].innerText || "").trim();
     var coinId = getGuessedId(coinName);
     coinIds.push(coinId);
@@ -35,8 +36,8 @@ if (firstTable) {
   fetch("https://api.coingecko.com/api/v3/simple/price?ids=" + encodeURIComponent(coinIds.join(",")) + "&vs_currencies=" + currencyLower)
     .then((resp) => resp.json())
     .then((data) => {
-      for (var r = 1; r < firstTable.rows.length; r++) {
-        var row = firstTable.rows[r];
+      for (var r = 0; r < secondTable.rows.length; r++) {
+        var row = secondTable.rows[r];
         var coinName = (row.cells[0].innerText || "").trim();
         var coinId = getGuessedId(coinName);
         var originalFee = (row.cells[1].innerText || "").trim();
@@ -44,7 +45,7 @@ if (firstTable) {
         var cellText = "";
         if (matches) {
           var groups = Array.from(matches)[0];
-          var amount = groups[1];
+          var amount = groups[1].replaceAll(',', '');
           var symbol = groups[2];
           if (data.hasOwnProperty(coinId)) {
             var fiatFee = amount * data[coinId][currencyLower];
@@ -60,7 +61,7 @@ if (firstTable) {
         cell.innerHTML = cellText;
       }
 
-      sortTable(firstTable, 3);
+      sortTable(secondTable, 3);
 
       return null;
     })
@@ -130,6 +131,15 @@ function getGuessedId(coinName) {
   }
   else if (result == 'synthetix') {
     result = 'havven';
+  }
+  else if (result == 'terra') {
+    result = 'terra-luna';
+  }
+  else if (result == 'avax') {
+    result = 'avalanche-2';
+  }
+  else if (result == 'kilt') {
+    result = 'kilt-protocol';
   }
   return result;
 }
