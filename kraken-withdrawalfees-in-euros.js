@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.11
+// @version      1.1.1
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
