@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.1
+// @version      1.11
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -114,8 +114,8 @@ function getGuessedId(coinName) {
   else if (result == 'enzyme-finance') {
     result = 'melon';
   }
-  else if (result == 'mina') {
-    result = 'mina-protocol';
+  else if (result == 'mango') {
+    result = 'mango-markets';
   }
   else if (result == 'orchid') {
     result = 'orchid-protocol';
@@ -135,11 +135,14 @@ function getGuessedId(coinName) {
   else if (result == 'terra') {
     result = 'terra-luna';
   }
-  else if (result == 'avax') {
+  else if (result == 'avalanche') {
     result = 'avalanche-2';
   }
   else if (result == 'kilt') {
     result = 'kilt-protocol';
+  }
+  else if (result == 'akash') {
+    result = 'akash-network';
   }
   return result;
 }
