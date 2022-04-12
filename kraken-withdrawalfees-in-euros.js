@@ -3,13 +3,17 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.1.2
+// @version      1.1.3
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
 // @license      BSD 3-Clause License
 // @copyright    2022 Erik Jan Meijer
 // ==/UserScript==
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
 
 const currency = "EUR";
 
@@ -19,8 +23,9 @@ if (firstTable && secondTable) {
   var columns = firstTable.rows[0].getElementsByTagName('th').length;
   var extraheader = document.createElement('th');
   var firstHeader = firstTable.rows[0].cells[0];
-  extraheader.innerHTML = firstHeader.outerHTML.replace(firstHeader.innerText, "Withdrawal fee in " + currency);
+  extraheader.innerHTML = firstHeader.outerHTML.replace(firstHeader.innerText, "Withdrawal fee in " + currency + "<br><span style='font-size:10pt;'>Powered by CoinGecko</span>");
   firstTable.rows[0].appendChild(extraheader);
+  
   var re = /([\d,]+(?:\.\d+)?) ([\S]+)/gi;
 
   var coinIds = [];
@@ -30,6 +35,7 @@ if (firstTable && secondTable) {
     var coinId = getGuessedId(coinName);
     coinIds.push(coinId);
   }
+  coinIds = coinIds.filter(onlyUnique);
 
   var currencyLower = currency.toLowerCase();
 
@@ -99,6 +105,9 @@ function getGuessedId(coinName) {
   else if (result.startsWith('stellar')) {
     result = 'stellar';
   }
+  else if (result == 'bitcoin-(lightning-network)') {
+    result = "bitcoin";
+  }
   else if (result == 'mina') {
     result = 'mina-protocol';
   }
@@ -114,8 +123,14 @@ function getGuessedId(coinName) {
   else if (result == 'enzyme-finance') {
     result = 'melon';
   }
+  else if (result == 'jasmy') {
+    result = 'jasmycoin';
+  }
   else if (result == 'mango') {
     result = 'mango-markets';
+  }
+  else if (result == 'omg-network') {
+    result = 'omisego';
   }
   else if (result == 'orchid') {
     result = 'orchid-protocol';
@@ -126,14 +141,32 @@ function getGuessedId(coinName) {
   else if (result == 'polygon') {
     result = 'matic-network';
   }
+  else if (result == 'powerledger') {
+    result = 'power-ledger';
+  }
+  else if (result == 'pstake') {
+    result = 'pstake-finance';
+  }
+  else if (result == 'quant') {
+    result = 'quant-network';
+  }
+  else if (result == 'render') {
+    result = 'render-token';
+  }
   else if (result == 'ren-protocol') {
     result = 'republic-protocol';
+  }
+  else if (result == 'robonomics') {
+    result = 'robonomics-network';
   }
   else if (result == 'synthetix') {
     result = 'havven';
   }
   else if (result == 'terra') {
     result = 'terra-luna';
+  }
+  else if (result == 'universal-market-access') {
+    result = 'uma';
   }
   else if (result == 'avalanche') {
     result = 'avalanche-2';
