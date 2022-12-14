@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.2.1
+// @version      1.2.2
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -113,9 +113,12 @@ function sortTable(table, col) {
 }
 
 function getGuessedId(coinName) {
-  var result = (coinName || "").toLowerCase().replaceAll(' ', '-').replaceAll('.', '-').replaceAll('*', '');
+  var result = (coinName || "").toLowerCase().replaceAll(' ', '-').replaceAll('.', '-').replaceAll('*', '').replaceAll('"', '');
   if (result.startsWith('tether')) {
     result = 'tether';
+  }
+  else if (result.startsWith('usd-coin')) {
+    result = 'usd-coin';
   }
   else if (result.startsWith('augur')) {
     result = 'augur';
@@ -126,12 +129,16 @@ function getGuessedId(coinName) {
   else if (result.startsWith('liechtenstein')) {
     result = 'lcx';
   }
+  else if (result.startsWith('polygon')) {
+    result = 'matic-network';
+  }
   else if (result.startsWith('stellar')) {
     result = 'stellar';
   }
   else if (result == 'akash')                        { result = 'akash-network'; }
   else if (result == 'alpha-venture-dao')            { result = 'alpha-finance'; }
   else if (result == 'ambire-adex')                  { result = 'adex'; }
+  else if (result == 'arpa-chain')                   { result = 'arpa'; }
   else if (result == 'avalanche')                    { result = 'avalanche-2'; }
   else if (result == 'bitcoin-(lightning-network)')  { result = "bitcoin"; }
   else if (result == 'chain')                        { result = 'chain-2'; }
@@ -144,6 +151,8 @@ function getGuessedId(coinName) {
   else if (result == 'enzyme-finance')               { result = 'melon'; }
   else if (result == 'ethereum-naming-service')      { result = 'ethereum-name-service'; }
   else if (result == 'ethereumpow')                  { result = 'ethereum-pow-iou'; }
+  else if (result == 'ethereum-(ether)')             { result = 'ethereum'; }
+  else if (result == 'flare')                        { result = 'flare-token'; }
   else if (result == 'gala-games')                   { result = 'gala'; }
   else if (result == 'galxe')                        { result = 'project-galaxy'; }
   else if (result == 'gensokishi-metaverse')         { result = 'gensokishis-metaverse'; }
@@ -162,7 +171,6 @@ function getGuessedId(coinName) {
   else if (result == 'omg-network')                  { result = 'omisego'; }
   else if (result == 'orchid')                       { result = 'orchid-protocol'; }
   else if (result == 'phala')                        { result = 'pha'; }
-  else if (result == 'polygon')                      { result = 'matic-network'; }
   else if (result == 'powerledger')                  { result = 'power-ledger'; }
   else if (result == 'pstake')                       { result = 'pstake-finance'; }
   else if (result == 'quant')                        { result = 'quant-network'; }
@@ -181,6 +189,7 @@ function getGuessedId(coinName) {
   else if (result == 'terrausd-classic')             { result = 'terrausd'; }
   else if (result == 'threshold')                    { result = 'threshold-network-token'; }
   else if (result == 'universal-market-access')      { result = 'uma'; }
+  else if (result == 'wrapped-axelar')               { result = 'axelar'; }
   else if (result == 'wrapped-ether')                { result = 'ethereum'; }
 
   return result;
