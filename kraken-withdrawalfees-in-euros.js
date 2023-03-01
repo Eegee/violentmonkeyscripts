@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.2.2
+// @version      1.2.3
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -58,11 +58,14 @@ if (firstTable && secondTable) {
         var coinName = (row.cells[0].innerText || "").trim();
         var coinId = getGuessedId(coinName);
         var originalFee = (row.cells[1].innerText || "").trim().replace(String.fromCharCode(160), ' ');
-        var plusText = originalFee.indexOf(' + ');
         var extraText = "";
-        if (plusText > -1) {
-          extraText = originalFee.substr(plusText);
-          originalFee = originalFee.substr(0, plusText);
+        var spaceIndex = originalFee.indexOf(' ');
+        if (spaceIndex > -1) {
+          var secondSpaceIndex = originalFee.indexOf(' ', spaceIndex + 1);
+          if (secondSpaceIndex > -1) {
+            extraText = originalFee.substr(secondSpaceIndex);
+            originalFee = originalFee.substr(0, secondSpaceIndex);
+          }
         }
         var matches = originalFee.matchAll(re);
         var amount = 0;
@@ -114,14 +117,70 @@ function sortTable(table, col) {
 
 function getGuessedId(coinName) {
   var result = (coinName || "").toLowerCase().replaceAll(' ', '-').replaceAll('.', '-').replaceAll('*', '').replaceAll('"', '');
-  if (result.startsWith('tether')) {
-    result = 'tether';
-  }
-  else if (result.startsWith('usd-coin')) {
-    result = 'usd-coin';
-  }
+       if (result == 'akash')                           { result = 'akash-network'; }
+  else if (result == 'alpha-venture-dao')               { result = 'alpha-finance'; }
+  else if (result == 'ambire-adex')                     { result = 'adex'; }
+  else if (result == 'arpa-chain')                      { result = 'arpa'; }
+  else if (result == 'avalanche')                       { result = 'avalanche-2'; }
+  else if (result == 'bitcoin-(lightning-network)')     { result = "bitcoin"; }
+  else if (result == 'chain')                           { result = 'chain-2'; }
+  else if (result == 'chromia')                         { result = 'chromaway'; }
+  else if (result == 'compound')                        { result = 'compound-governance-token'; }
+  else if (result == 'crust-shadow')                    { result = 'crust-storage-market'; }
+  else if (result == 'curve')                           { result = 'curve-dao-token'; }
+  else if (result == 'elrond')                          { result = 'elrond-erd-2'; }
+  else if (result == 'enjin-coin')                      { result = 'enjincoin'; }
+  else if (result == 'enzyme-finance')                  { result = 'melon'; }
+  else if (result == 'ethereum-(arbitrum-one-network)') { result = 'ethereum'; }
+  else if (result == 'ethereum-(erc-20)')               { result = 'ethereum'; }
+  else if (result == 'ethereum-(ether)')                { result = 'ethereum'; }
+  else if (result == 'ethereum-naming-service')         { result = 'ethereum-name-service'; }
+  else if (result == 'ethereumpow')                     { result = 'ethereum-pow-iou'; }
+  else if (result == 'flare')                           { result = 'flare-token'; }
+  else if (result == 'gala-games')                      { result = 'gala'; }
+  else if (result == 'galxe')                           { result = 'project-galaxy'; }
+  else if (result == 'gensokishi-metaverse')            { result = 'gensokishis-metaverse'; }
+  else if (result == 'idex')                            { result = 'aurora-dao'; }
+  else if (result == 'iexec')                           { result = 'iexec-rlc'; }
+  else if (result == 'jasmy')                           { result = 'jasmycoin'; }
+  else if (result == 'juno')                            { result = 'juno-network'; }
+  else if (result == 'keep3r-network')                  { result = 'keep3rv1'; }
+  else if (result == 'keeperdao')                       { result = 'rook'; }
+  else if (result == 'kilt')                            { result = 'kilt-protocol'; }
+  else if (result == 'mango')                           { result = 'mango-markets'; }
+  else if (result == 'marinade-sol')                    { result = 'msol'; }
+  else if (result == 'mina')                            { result = 'mina-protocol'; }
+  else if (result == 'multiversx')                      { result = 'elrond-erd-2'; }
+  else if (result == 'near-protocol')                   { result = 'near'; }
+  else if (result == 'nodle')                           { result = 'nodle-network'; }
+  else if (result == 'omg-network')                     { result = 'omisego'; }
+  else if (result == 'orchid')                          { result = 'orchid-protocol'; }
+  else if (result == 'phala')                           { result = 'pha'; }
+  else if (result == 'powerledger')                     { result = 'power-ledger'; }
+  else if (result == 'pstake')                          { result = 'pstake-finance'; }
+  else if (result == 'quant')                           { result = 'quant-network'; }
+  else if (result == 'ren-protocol')                    { result = 'republic-protocol'; }
+  else if (result == 'render')                          { result = 'render-token'; }
+  else if (result == 'request')                         { result = 'request-network'; }
+  else if (result == 'robonomics')                      { result = 'robonomics-network'; }
+  else if (result == 'samoyed-coin')                    { result = 'samoyedcoin'; }
+  else if (result == 'stacks')                          { result = 'blockstack'; }
+  else if (result == 'stafi-protocol')                  { result = 'stafi'; }
+  else if (result == 'synapse')                         { result = 'synapse-2'; }
+  else if (result == 'synthetix')                       { result = 'havven'; }
+  else if (result == 'terra-2-0')                       { result = 'terra-luna-2'; }
+  else if (result == 'terra-classic')                   { result = 'terra-luna'; }
+  else if (result == 'terra-virtual-kolect')            { result = 'the-virtua-kolect'; }
+  else if (result == 'terrausd-classic')                { result = 'terrausd'; }
+  else if (result == 'threshold')                       { result = 'threshold-network-token'; }
+  else if (result == 'universal-market-access')         { result = 'uma'; }
+  else if (result == 'wrapped-axelar')                  { result = 'axelar'; }
+  else if (result == 'wrapped-ether')                   { result = 'ethereum'; }
   else if (result.startsWith('augur')) {
     result = 'augur';
+  }
+  else if (result.startsWith('dai-')) {
+    result = 'dai';
   }
   else if (result.startsWith('dash')) {
     result = 'dash';
@@ -135,62 +194,12 @@ function getGuessedId(coinName) {
   else if (result.startsWith('stellar')) {
     result = 'stellar';
   }
-  else if (result == 'akash')                        { result = 'akash-network'; }
-  else if (result == 'alpha-venture-dao')            { result = 'alpha-finance'; }
-  else if (result == 'ambire-adex')                  { result = 'adex'; }
-  else if (result == 'arpa-chain')                   { result = 'arpa'; }
-  else if (result == 'avalanche')                    { result = 'avalanche-2'; }
-  else if (result == 'bitcoin-(lightning-network)')  { result = "bitcoin"; }
-  else if (result == 'chain')                        { result = 'chain-2'; }
-  else if (result == 'chromia')                      { result = 'chromaway'; }
-  else if (result == 'compound')                     { result = 'compound-governance-token'; }
-  else if (result == 'crust-shadow')                 { result = 'crust-storage-market'; }
-  else if (result == 'curve')                        { result = 'curve-dao-token'; }
-  else if (result == 'elrond')                       { result = 'elrond-erd-2'; }
-  else if (result == 'enjin-coin')                   { result = 'enjincoin'; }
-  else if (result == 'enzyme-finance')               { result = 'melon'; }
-  else if (result == 'ethereum-naming-service')      { result = 'ethereum-name-service'; }
-  else if (result == 'ethereumpow')                  { result = 'ethereum-pow-iou'; }
-  else if (result == 'ethereum-(ether)')             { result = 'ethereum'; }
-  else if (result == 'flare')                        { result = 'flare-token'; }
-  else if (result == 'gala-games')                   { result = 'gala'; }
-  else if (result == 'galxe')                        { result = 'project-galaxy'; }
-  else if (result == 'gensokishi-metaverse')         { result = 'gensokishis-metaverse'; }
-  else if (result == 'idex')                         { result = 'aurora-dao'; }
-  else if (result == 'iexec')                        { result = 'iexec-rlc'; }
-  else if (result == 'jasmy')                        { result = 'jasmycoin'; }
-  else if (result == 'juno')                         { result = 'juno-network'; }
-  else if (result == 'keep3r-network')               { result = 'keep3rv1'; }
-  else if (result == 'keeperdao')                    { result = 'rook'; }
-  else if (result == 'kilt')                         { result = 'kilt-protocol'; }
-  else if (result == 'mango')                        { result = 'mango-markets'; }
-  else if (result == 'marinade-sol')                 { result = 'msol'; }
-  else if (result == 'mina')                         { result = 'mina-protocol'; }
-  else if (result == 'near-protocol')                { result = 'near'; }
-  else if (result == 'nodle')                        { result = 'nodle-network'; }
-  else if (result == 'omg-network')                  { result = 'omisego'; }
-  else if (result == 'orchid')                       { result = 'orchid-protocol'; }
-  else if (result == 'phala')                        { result = 'pha'; }
-  else if (result == 'powerledger')                  { result = 'power-ledger'; }
-  else if (result == 'pstake')                       { result = 'pstake-finance'; }
-  else if (result == 'quant')                        { result = 'quant-network'; }
-  else if (result == 'ren-protocol')                 { result = 'republic-protocol'; }
-  else if (result == 'render')                       { result = 'render-token'; }
-  else if (result == 'request')                      { result = 'request-network'; }
-  else if (result == 'robonomics')                   { result = 'robonomics-network'; }
-  else if (result == 'samoyed-coin')                 { result = 'samoyedcoin'; }
-  else if (result == 'stacks')                       { result = 'blockstack'; }
-  else if (result == 'stafi-protocol')               { result = 'stafi'; }
-  else if (result == 'synapse')                      { result = 'synapse-2'; }
-  else if (result == 'synthetix')                    { result = 'havven'; }
-  else if (result == 'terra-2-0')                    { result = 'terra-luna-2'; }
-  else if (result == 'terra-classic')                { result = 'terra-luna'; }
-  else if (result == 'terra-virtual-kolect')         { result = 'the-virtua-kolect'; }
-  else if (result == 'terrausd-classic')             { result = 'terrausd'; }
-  else if (result == 'threshold')                    { result = 'threshold-network-token'; }
-  else if (result == 'universal-market-access')      { result = 'uma'; }
-  else if (result == 'wrapped-axelar')               { result = 'axelar'; }
-  else if (result == 'wrapped-ether')                { result = 'ethereum'; }
+  else if (result.startsWith('tether')) {
+    result = 'tether';
+  }
+  else if (result.startsWith('usd-coin')) {
+    result = 'usd-coin';
+  }
 
   return result;
 }
