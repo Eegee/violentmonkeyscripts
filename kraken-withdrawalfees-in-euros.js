@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.2.3
+// @version      1.2.4
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -29,6 +29,7 @@ if (firstTable && secondTable) {
   for (var i = 0, row; row = firstTable.rows[i]; i++) {
    for (var j = 0, col; col = row.cells[j]; j++) {
      if (col.style.width == '190px') { col.style.width = '142px'; }
+     if (col.style.width == '130px') { col.style.width = null; }
    }
   }
   for (var i = 0, row; row = secondTable.rows[i]; i++) {
@@ -134,6 +135,7 @@ function getGuessedId(coinName) {
   else if (result == 'ethereum-(arbitrum-one-network)') { result = 'ethereum'; }
   else if (result == 'ethereum-(erc-20)')               { result = 'ethereum'; }
   else if (result == 'ethereum-(ether)')                { result = 'ethereum'; }
+  else if (result == 'ethereum-(polygon-network)')      { result = 'ethereum'; }
   else if (result == 'ethereum-naming-service')         { result = 'ethereum-name-service'; }
   else if (result == 'ethereumpow')                     { result = 'ethereum-pow-iou'; }
   else if (result == 'flare')                           { result = 'flare-token'; }
