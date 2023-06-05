@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.2.4
+// @version      1.2.5
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -29,12 +29,14 @@ if (firstTable && secondTable) {
   for (var i = 0, row; row = firstTable.rows[i]; i++) {
    for (var j = 0, col; col = row.cells[j]; j++) {
      if (col.style.width == '190px') { col.style.width = '142px'; }
-     if (col.style.width == '130px') { col.style.width = null; }
+     if (j == 0) { col.style.width = '130px'; }
    }
   }
   for (var i = 0, row; row = secondTable.rows[i]; i++) {
    for (var j = 0, col; col = row.cells[j]; j++) {
      if (col.style.width == '190px') { col.style.width = '142px'; }
+     if (col.style.width == '225.016px') { col.style.width = null; }
+     if (j == 0) { col.style.width = '130px'; }
    }
   }
 
@@ -172,7 +174,7 @@ function getGuessedId(coinName) {
   else if (result == 'synthetix')                       { result = 'havven'; }
   else if (result == 'terra-2-0')                       { result = 'terra-luna-2'; }
   else if (result == 'terra-classic')                   { result = 'terra-luna'; }
-  else if (result == 'terra-virtual-kolect')            { result = 'the-virtua-kolect'; }
+  else if (result == 'terra-virtua-kolect')             { result = 'the-virtua-kolect'; }
   else if (result == 'terrausd-classic')                { result = 'terrausd'; }
   else if (result == 'threshold')                       { result = 'threshold-network-token'; }
   else if (result == 'universal-market-access')         { result = 'uma'; }
@@ -186,6 +188,9 @@ function getGuessedId(coinName) {
   }
   else if (result.startsWith('dash')) {
     result = 'dash';
+  }
+  else if (result.startsWith('injective-protocol')) {
+    result = 'injective-protocol';
   }
   else if (result.startsWith('liechtenstein')) {
     result = 'lcx';
