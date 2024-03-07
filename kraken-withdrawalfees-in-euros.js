@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.3.1
+// @version      1.3.2
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -264,6 +264,7 @@ function getGuessedId(coinName) {
   else if (result == 'sei')                             { result = 'sei-network'; }
   else if (result == 'stacks')                          { result = 'blockstack'; }
   else if (result == 'stafi-protocol')                  { result = 'stafi'; }
+  else if (result == 'starknet-token')                  { result = 'starknet'; }
   else if (result == 'stella')                          { result = 'alpha-finance'; }
   else if (result == 'synapse')                         { result = 'synapse-2'; }
   else if (result == 'synthetix')                       { result = 'havven'; }
