@@ -3,7 +3,7 @@
 // @description  Enhances the Kraken withdrawal fees support page in your browser with fees in euros (fetched from CoinGecko) and sorts the table on those euro fees
 // @namespace    https://github.com/Eegee/violentmonkeyscripts
 // @match        https://support.kraken.com/hc/en-us/articles/360000767986-Cryptocurrency-withdrawal-fees-and-minimums
-// @version      1.3.2
+// @version      1.3.3
 // @author       Erik Jan Meijer
 // @homepageURL  https://github.com/Eegee/violentmonkeyscripts
 // @downloadURL  https://raw.githubusercontent.com/Eegee/violentmonkeyscripts/main/kraken-withdrawalfees-in-euros.js
@@ -124,7 +124,7 @@ if (firstTable) {
 }
 
 function doProcess(){
-  var re = /([\d,]+(?:\.\d+)?) ([\S]+)/gi;
+  var re = /([\d,]+(?:\.\d+)?) (\+ (?:[\.\d]+%) )?([\S]+)/gi;
 
   var currencyLower = currency.toLowerCase();
 
@@ -139,14 +139,6 @@ function doProcess(){
         var coinId = getGuessedId(coinName);
         var originalFee = (row.cells[1].innerText || "").trim().replace(String.fromCharCode(160), ' ');
         var extraText = "";
-        var spaceIndex = originalFee.indexOf(' ');
-        if (spaceIndex > -1) {
-          var secondSpaceIndex = originalFee.indexOf(' ', spaceIndex + 1);
-          if (secondSpaceIndex > -1) {
-            extraText = originalFee.substr(secondSpaceIndex);
-            originalFee = originalFee.substr(0, secondSpaceIndex);
-          }
-        }
         var matches = originalFee.matchAll(re);
         var amount = 0;
         var symbol = '';
@@ -154,7 +146,8 @@ function doProcess(){
           var groups = Array.from(matches)[0];
           if (groups) {
             amount = groups[1].replaceAll(',', '');
-            symbol = groups[2];
+            extraText = groups[2] || '';
+            symbol = groups[3];
           }
         }
         var cellText = "";
@@ -163,7 +156,7 @@ function doProcess(){
           if (fiatFee == 0) {
             cellText = 'FREE!';
           } else {
-            cellText = fiatFee.toPrecision(4) + " " + currency + extraText;
+            cellText = fiatFee.toPrecision(4) + " " + extraText + " " + currency;
           }
         }
 
@@ -203,7 +196,7 @@ function sortTable(table, col) {
 }
 
 function getGuessedId(coinName) {
-  var result = (coinName || "").toLowerCase().replaceAll(/\s\([\w-,. ]+\)/gi, '').replaceAll(' ', '-').replaceAll('.', '-').replaceAll('*', '').replaceAll('"', '');
+  var result = (coinName || "").toLowerCase().replaceAll(/\s\([\w-,. ]+\)/gi, '').replaceAll(' ', '-').replaceAll('.', '-').replaceAll('*', '').replaceAll('"', '').replaceAll('†', '');
        if (result == 'akash')                           { result = 'akash-network'; }
   else if (result == 'ambire-adex')                     { result = 'adex'; }
   else if (result == 'arpa-chain')                      { result = 'arpa'; }
@@ -248,6 +241,7 @@ function getGuessedId(coinName) {
   else if (result == 'nodle')                           { result = 'nodle-network'; }
   else if (result == 'ocean-token')                     { result = 'ocean-protocol'; }
   else if (result == 'omg-network')                     { result = 'omisego'; }
+  else if (result == 'ondo')                            { result = 'ondo-finance'; }
   else if (result == 'onyxcoin')                        { result = 'chain-2'; }
   else if (result == 'orchid')                          { result = 'orchid-protocol'; }
   else if (result == 'phala')                           { result = 'pha'; }
